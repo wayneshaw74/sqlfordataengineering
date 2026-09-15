@@ -2,7 +2,7 @@
 
 These projects are from Luke Barousse's SQL for Data Engineering to practice and solidify my SQL for Data Engineering.
 
-> Click the prpject name to view the tools I used to build these labs
+> Click the project name to view the tools I used to build these labs
 
 ## Projects
 
