@@ -49,5 +49,58 @@ select
 from job_postings_fact
 order by random()
 limit 20;
+-- conditional Aggregation
+--  Calculate Median Salaries for Different Buckets
+    -- < $100k
+    -- >=$100k
 
---Not Thru
+select 
+    job_title_short,
+    count(*) as total_postingd,
+    Median(
+        case 
+            when salary_year_avg < 100_000 then salary_year_avg
+        end
+    ) as median_low_salary,
+    Median(
+        case 
+            when salary_year_avg >= 100_000 then salary_year_avg
+        end
+    ) as median_high_salary
+from job_postings_fact
+where salary_year_avg is not null
+group by    
+    job_title_short;
+
+-- Final Example: Conditional Calculations
+-- Compute a standardized_salary using yearly salary and adjusted hourly salary (e.g. 2000 hours/year)
+-- Categorize salaries into tiers of:
+    -- < 75k 'Low'
+    -- 75k - 150k 'Medium'
+    -- >= 150k 'High
+
+with salaries as (
+    select  
+        job_title_short,
+        salary_hour_avg,
+        salary_year_avg,
+        case
+            when salary_year_avg is not null then salary_year_avg
+            when salary_hour_avg is not null then salary_hour_avg*2080
+        end as standardized_salary
+    from 
+        job_postings_fact
+)
+
+select
+    *,
+    case
+        when standardized_salary is null then 'Missing'
+        when standardized_salary < 75000 then 'low'
+        when standardized_salary < 150000 then 'medium'
+        else 'high'
+    end as salary_bucket
+from salaries
+order by
+    standardized_salary desc
+limit 10;
