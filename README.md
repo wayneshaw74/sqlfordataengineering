@@ -10,4 +10,4 @@ These projects are from Luke Barousse's SQL for Data Engineering to practice and
 
 ![Project 1 Overview](/Images/1_1_Project1_EDA.png)
 
-SQL used in scraping the data engineer job market trends using advanve querying technique.
+SQL was used to scrape the data engineer job market trends using advanced querying techniques.
